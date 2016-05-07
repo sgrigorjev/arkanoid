@@ -18,4 +18,4 @@ requirejs.config({
         }
     }
 });
-requirejs(['app/arkanoid2']);
+requirejs(['app/arkanoid']);
