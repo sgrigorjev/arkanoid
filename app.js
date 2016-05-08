@@ -5,7 +5,9 @@ requirejs.config({
         app: '..',
         jquery: 'jquery-1.10.2.min',
         canvaslib: 'canvas/lib-1.7',
-        canvasmap: 'canvas/map-1.0'
+        canvasmap: 'canvas/map-1.0',
+        bootstrap: '../../bootstrap/js/bootstrap.min',
+        'bootstrap-slider': '../../bootstrap/js/bootstrap-slider.min'
     },
     shim: {
         canvaslib: {
@@ -16,7 +18,16 @@ requirejs.config({
         },
         underscore: {
             exports: "_"
+        },
+        bootstrap: {
+            deps: ['jquery']
+        },
+        'bootstrap-slider': {
+            deps: ['jquery','bootstrap']
+        },
+        'app/arkanoid': {
+            deps: ['jquery','bootstrap','bootstrap-slider']
         }
     }
 });
-requirejs(['app/arkanoid']);
+requirejs(['bootstrap','bootstrap-slider','app/arkanoid']);

@@ -19,21 +19,23 @@ define(['app/settings','canvaslib','underscore'], function (settings, $lib, _) {
         self.movingStartMs = 0;
         self.movesTo = null;
 
-        self.points = {};
-        self.shapes = {};
+        self._points = {};
+        self._shapes = {};
 
-        self.points.p1 = $lib.Shapes.Point((settings.width - 5) / 2, settings.height - self.height - settings.spaceship.bottomOffset);
-        self.points.p2 = $lib.Shapes.Point((settings.width - 10) / 2, settings.height - self.height + 15 - settings.spaceship.bottomOffset);
-        self.points.p3 = $lib.Shapes.Point((settings.width - 30) / 2, settings.height - self.height + 20 - settings.spaceship.bottomOffset);
-        self.points.p4 = $lib.Shapes.Point(((settings.width - 5) / 2) - 30, settings.height - self.height + 20 - settings.spaceship.bottomOffset);
-        self.points.p5 = $lib.Shapes.Point(((settings.width - 5) / 2) + 30, settings.height - self.height + 20 - settings.spaceship.bottomOffset);
-        self.points.p6 = $lib.Shapes.Point((settings.width - 90) / 2, settings.height - self.height + 25 - settings.spaceship.bottomOffset);
-        self.points.p7 = $lib.Shapes.Point((settings.width - 40) / 2, settings.height - self.height + 30 - settings.spaceship.bottomOffset);
-        self.points.p8 = $lib.Shapes.Point((settings.width - 50) / 2, settings.height - self.height + 35 - settings.spaceship.bottomOffset);
-        self.points.p9 = $lib.Shapes.Point(((settings.width - 30) / 2) - 20, settings.height - self.height + 40 - settings.spaceship.bottomOffset);
-        self.points.p10 = $lib.Shapes.Point(((settings.width - 30) / 2) + 20, settings.height - self.height + 40 - settings.spaceship.bottomOffset);
+        self._points.shotpoint = $lib.Shapes.Point(settings.width / 2, settings.height - (self.height / 2) - settings.spaceship.bottomOffset);
 
-        self.base = self.points.p7;
+        self._points.p1 = $lib.Shapes.Point((settings.width - 5) / 2, settings.height - self.height - settings.spaceship.bottomOffset);
+        self._points.p2 = $lib.Shapes.Point((settings.width - 10) / 2, settings.height - self.height + 15 - settings.spaceship.bottomOffset);
+        self._points.p3 = $lib.Shapes.Point((settings.width - 30) / 2, settings.height - self.height + 20 - settings.spaceship.bottomOffset);
+        self._points.p4 = $lib.Shapes.Point(((settings.width - 5) / 2) - 30, settings.height - self.height + 20 - settings.spaceship.bottomOffset);
+        self._points.p5 = $lib.Shapes.Point(((settings.width - 5) / 2) + 30, settings.height - self.height + 20 - settings.spaceship.bottomOffset);
+        self._points.p6 = $lib.Shapes.Point((settings.width - 90) / 2, settings.height - self.height + 25 - settings.spaceship.bottomOffset);
+        self._points.p7 = $lib.Shapes.Point((settings.width - 40) / 2, settings.height - self.height + 30 - settings.spaceship.bottomOffset);
+        self._points.p8 = $lib.Shapes.Point((settings.width - 50) / 2, settings.height - self.height + 35 - settings.spaceship.bottomOffset);
+        self._points.p9 = $lib.Shapes.Point(((settings.width - 30) / 2) - 20, settings.height - self.height + 40 - settings.spaceship.bottomOffset);
+        self._points.p10 = $lib.Shapes.Point(((settings.width - 30) / 2) + 20, settings.height - self.height + 40 - settings.spaceship.bottomOffset);
+
+        self.base = self._points.p7;
 
         self.build();
     };
@@ -44,16 +46,16 @@ define(['app/settings','canvaslib','underscore'], function (settings, $lib, _) {
     Spaceship.prototype.build = function() {
         var self = this;
 
-        self.shapes.r1 = $lib.Shapes.Rect(self.points.p1, 5, 15);
-        self.shapes.r2 = $lib.Shapes.Rect(self.points.p2, 10, 5);
-        self.shapes.r3 = $lib.Shapes.Rect(self.points.p3, 30, 5);
-        self.shapes.r4 = $lib.Shapes.Rect(self.points.p4, 5, 5);
-        self.shapes.r5 = $lib.Shapes.Rect(self.points.p5, 5, 5);
-        self.shapes.r6 = $lib.Shapes.Rect(self.points.p6, 90, 5);
-        self.shapes.r7 = $lib.Shapes.Rect(self.points.p7, 40, 5);
-        self.shapes.r8 = $lib.Shapes.Rect(self.points.p8, 50, 5);
-        self.shapes.r9 = $lib.Shapes.Rect(self.points.p9, 30, 5);
-        self.shapes.r10 = $lib.Shapes.Rect(self.points.p10, 30, 5);
+        self._shapes.r1 = $lib.Shapes.Rect(self._points.p1, 5, 15);
+        self._shapes.r2 = $lib.Shapes.Rect(self._points.p2, 10, 5);
+        self._shapes.r3 = $lib.Shapes.Rect(self._points.p3, 30, 5);
+        self._shapes.r4 = $lib.Shapes.Rect(self._points.p4, 5, 5);
+        self._shapes.r5 = $lib.Shapes.Rect(self._points.p5, 5, 5);
+        self._shapes.r6 = $lib.Shapes.Rect(self._points.p6, 90, 5);
+        self._shapes.r7 = $lib.Shapes.Rect(self._points.p7, 40, 5);
+        self._shapes.r8 = $lib.Shapes.Rect(self._points.p8, 50, 5);
+        self._shapes.r9 = $lib.Shapes.Rect(self._points.p9, 30, 5);
+        self._shapes.r10 = $lib.Shapes.Rect(self._points.p10, 30, 5);
     };
 
     /**
@@ -66,7 +68,7 @@ define(['app/settings','canvaslib','underscore'], function (settings, $lib, _) {
         var self = this,
             shifted = 0;
 
-        _.each(self.points, function(point){
+        _.each(self._points, function(point){
             switch (direction) {
                 case 'left' : point.x -= offset; break;
                 case 'right': point.x += offset; break;
@@ -137,7 +139,7 @@ define(['app/settings','canvaslib','underscore'], function (settings, $lib, _) {
     Spaceship.prototype.draw = function(scene) {
         var self = this;
 
-        _.each(self.shapes, function(shape){
+        _.each(self._shapes, function(shape){
             $lib.Draw(shape, {color: 'orange', style: 'fill'}, scene);
         });
     };
@@ -167,6 +169,12 @@ define(['app/settings','canvaslib','underscore'], function (settings, $lib, _) {
 
         self.movesTo = null;
         self.movingStartMs = 0;
+    };
+
+    Spaceship.prototype.getShotPoint = function() {
+        var self = this;
+
+        return self._points.shotpoint;
     };
 
     return Spaceship;

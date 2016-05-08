@@ -6,6 +6,13 @@ define(function (require) {
             speed: 800,
             accelerate: 250,
             bottomOffset: 10
+        },
+        bullet: {
+            speed: 800
+        },
+        target: {
+            speed: 50,
+            shift: 60
         }
     };
 });

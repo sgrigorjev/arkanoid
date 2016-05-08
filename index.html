@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Arcanoid 0.1</title>
+    <title>Arkanoid 0.1</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-slider.min.css">
     <script data-main="app" src="js/lib/require.js"></script>
     <style type="text/css">
         #container {
             position: relative;
             width: 800px;
             height: 600px;
-            background-color: black;
         }
         #container canvas{
             position: absolute;
@@ -39,12 +41,51 @@
             font-family: Arial;
             font-size: 16px;
         }
+        #settings {
+            height: 600px;
+            background-color: #EEE;
+            padding: 10px 30px;
+        }
+        #settings .arrow-key {
+            font-size: 11px;
+        }
+        #settings .instructions {
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
-    <div id="container">
-        <div id="fps">69</div>
+    <div class="container bs-docs-container">
+        <div class="row">
+            <br/>
+        </div>
+        <div class="row">
+            <div id="container" style="float: left">
+                <div id="fps">0</div>
+            </div>
+            <div id="settings" style="float: left; display: none">
+                <div class="row">
+                    <h3>Settings</h3>
+                    <span>Spaceship speed</span><br />
+                    <input id="spaceship_speed" type="text"/>&nbsp;&nbsp;&nbsp;<span id="spaceship_speed_value"></span><br />
+                    <span>Spaceship accelerate</span><br />
+                    <input id="spaceship_accelerate" type="text" />&nbsp;&nbsp;&nbsp;<span id="spaceship_accelerate_value"></span><br />
+                    <span>Bullet speed</span><br />
+                    <input id="bullet_speed" type="text" />&nbsp;&nbsp;&nbsp;<span id="bullet_speed_value"></span><br />
+                    <span>Target speed</span><br />
+                    <input id="target_speed" type="text" />&nbsp;&nbsp;&nbsp;<span id="target_speed_value"></span><br />
+                    <span>Target shift</span><br />
+                    <input id="target_shift" type="text" />&nbsp;&nbsp;&nbsp;<span id="target_shift_value"></span><br />
+                </div>
+                <br />
+                <div class="row instructions">
+                    To control the spaceship, use the <kbd><span class="glyphicon glyphicon-arrow-left arrow-key" aria-hidden="true"></span></kbd><kbd><span class="glyphicon glyphicon-arrow-right arrow-key" aria-hidden="true"></span></kbd>
+                    or <kbd>A</kbd><kbd>D</kbd><br/>
+                    To fire, press <kbd>Space</kbd>
+                </div>
+            </div>
+        </div>
+        <div id="sidebar"></div>
     </div>
-    <div id="sidebar"></div>
 </body>
 </html>
