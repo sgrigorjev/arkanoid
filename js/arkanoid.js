@@ -74,6 +74,7 @@ define(function (require) {
         $('#spaceship_accelerate').slider('setValue', settings.spaceship.accelerate);
         $('#bullet_speed').slider('setValue', settings.bullet.speed);
         $('#target_speed').slider('setValue', settings.target.speed);
+        $('#target_shift').slider('setValue', settings.target.shift);
 
 
         var $container = $('#container');
