@@ -11,8 +11,15 @@ define(function (require) {
             speed: 800
         },
         target: {
-            speed: 50,
-            shift: 60
+            speed: 40,
+            shift: 40,
+            fallFactor: 0
+        },
+        fleet: {
+            rows: 3,
+            cols: 12,
+            topOffset: 0,
+            rowOffset: 0
         }
     };
 });

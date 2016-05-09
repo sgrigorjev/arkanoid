@@ -9,6 +9,7 @@ define(function (require) {
     var Spaceship = require('app/spaceship');
     var Bullet = require('app/bullet');
     var Target = require('app/target');
+    var Fleet = require('app/fleet');
 
     $(function() {
 
@@ -68,6 +69,17 @@ define(function (require) {
         });
         $("#target_shift_value").text(settings.target.shift);
 
+        $('#target_fallFactor').slider({
+            tooltip: 'hide',
+            min: 0,
+            max: 20,
+            step: 1,
+        }).on('slide', function(event) {
+            settings.target.fallFactor = (event.value < 20) ? 20 - event.value : 1;
+            $("#target_fallFactor_value").text(event.value);
+        });
+        $("#target_fallFactor_value").text(settings.target.fallFactor);
+
         $("#settings").show();
 
         $('#spaceship_speed').slider('setValue', settings.spaceship.speed);
@@ -75,6 +87,7 @@ define(function (require) {
         $('#bullet_speed').slider('setValue', settings.bullet.speed);
         $('#target_speed').slider('setValue', settings.target.speed);
         $('#target_shift').slider('setValue', settings.target.shift);
+        $('#target_fallFactor').slider('setValue', settings.target.fallFactor);
 
 
         var $container = $('#container');
@@ -129,6 +142,27 @@ define(function (require) {
         scenes.spaceship.onDraw(scenesDebugInfo(scenes.spaceship.id));
         scenes.spaceship.action();
 
+        /** Fleet */
+
+        var fleet = new Fleet();
+
+        scenes.fleet = (function() {
+
+            return $lib.Scene("fleet", function(dt) {
+
+                var scene = this;
+
+                if (fleet.update(dt)) {
+                    scene.clear();
+                    fleet.draw(this);
+                }
+
+            }, settings.width, settings.height).appendTo($container.get(0));
+
+        })();
+        scenes.fleet.onDraw(scenesDebugInfo(scenes.fleet.id));
+        scenes.fleet.action();
+
         /** Bullet */
 
         var bullet = null;
@@ -141,75 +175,24 @@ define(function (require) {
                 var scene = this;
 
                 if (bullet && bullet.update(dt)) {
-
                     scene.clear();
                     bullet.draw(this);
-
-                    _.some(targets, function(target, inx){
-                        var intersec = false;
-                        _.some(target.getShapes(), function(shape) {
-                            if (bullet.intersec(shape)) {
-                                return intersec = true;
-                            }
-                        });
-                        if (intersec) {
-                            targets.splice(inx, 1);
-                            console.info(targets.length);
-                            drawTargets();
-                            scene.clear();
-                            bullet = null;
-                            return true;
-                        }
-                    });
-
-                } else {
-                    if (bullet) {
+                    if (fleet.checkHit(bullet)) {
                         scene.clear();
                         bullet = null;
                     }
-                    shotAllowed = true;
+                } else if(bullet) {
+                    scene.clear();
+                    bullet = null;
                 }
+
+                shotAllowed = !bullet;
 
             }, settings.width, settings.height).appendTo($container.get(0));
 
         })();
         scenes.bullet.onDraw(scenesDebugInfo(scenes.bullet.id));
         scenes.bullet.action();
-
-        /** Target */
-
-        var targets = [];
-
-        for (var n = 240 ; n > 0 ; n -= 80) {
-            for (var m = 80 ; m < settings.width - 40 ; m += 80) {
-                targets.push(new Target($lib.Shapes.Point(m, n)));
-            }
-        }
-
-        scenes.target = (function() {
-            
-            return $lib.Scene("target", function(dt) {
-
-                _.each(targets, function(target){
-                    target.update(dt);
-                });
-
-                drawTargets();
-
-            }, settings.width, settings.height).appendTo($container.get(0));
-
-        })();
-        scenes.target.onDraw(scenesDebugInfo(scenes.target.id));
-        scenes.target.action();
-
-        function drawTargets() {
-            scenes.target.clear();
-            _.each(targets, function(target){
-                target.draw(scenes.target);
-            });
-        }
-
-        drawTargets();
 
         /** Key controls */
 
