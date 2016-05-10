@@ -7,17 +7,21 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
     function Target(startPoint) {
         var self = this;
 
-        self.width = 35;
-        self.height = 35;
+        self.width = 44;
+        self.height = 44;
 
         self.startPoint = startPoint;
 
         self._points = {};
         self._shapes = {};
 
+        self._points.p1 = $lib.Shapes.Point(self.startPoint.x - (self.width / 2), self.startPoint.y - (self.height / 2));
+
+        /*
         self._points.p1 = $lib.Shapes.Point(self.startPoint.x - (30 / 2), self.startPoint.y - (30 / 2));
         self._points.p2 = $lib.Shapes.Point(self.startPoint.x - (40 / 2), self.startPoint.y - (30 / 2));
         self._points.p3 = $lib.Shapes.Point(self.startPoint.x - (10 / 2), self.startPoint.y - (30 / 2));
+        */
 
         /*
         self._points.p1 = $lib.Shapes.Point(self.startPoint.x - (15 / 2), self.startPoint.y - (5 / 2) - 15);
@@ -33,7 +37,7 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
         self._points.p11 = $lib.Shapes.Point(self.startPoint.x + (25 / 2) - 5, self.startPoint.y - (5/ 2) + 10);
         */
 
-        self.base = self._points.p2;
+        self.base = self._points.p1;
 
         self.leftPos = self.base.x;
         self.rightPos = self.base.x + self.width;
@@ -54,9 +58,13 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
     Target.prototype.build = function() {
         var self = this;
 
+        self._shapes.r1 = $lib.Shapes.Rect(self._points.p1, self.width, self.height);
+
+        /*
         self._shapes.r1 = $lib.Shapes.Rect(self._points.p1, 30, 30);
         self._shapes.r2 = $lib.Shapes.Rect(self._points.p2, 40, 20);
         self._shapes.r3 = $lib.Shapes.Rect(self._points.p3, 10, 40);
+        */
 
         /*
         self._shapes.r1 = $lib.Shapes.Rect(self._points.p1, 15, 5);
@@ -134,9 +142,17 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
     Target.prototype.draw = function(scene) {
         var self = this;
 
+        /*
         _.each(self._shapes, function(shape){
-            $lib.Draw(shape, {color: 'blue', style: 'fill'}, scene);
+            $lib.Draw(shape, {color: 'red', style: 'fill'}, scene);
         });
+        */
+
+        $lib.Draw(settings.target.spriteImage, {
+            point: self._points.p1,
+            width: self.width,
+            height: self.height
+        }, scene);
     };
 
     Target.prototype.getShapes = function() {

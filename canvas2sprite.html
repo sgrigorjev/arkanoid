@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas2image 0.1</title>
+    <style type="text/css">
+        body {
+            background-color: #d4d4d4;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        var img1 = new Image();
+        img1.src = "600x300.jpg";
+
+        var img2 = new Image();
+        img2.src = "800x450.jpg";
+        img2.onload = function() {
+
+            canvas.width = img2.width;
+            canvas.height = img2.height;
+            ctx.drawImage(img2, 0, 0);
+            ctx.drawImage(img1, 10, 10, 600, 300);
+
+        };
+
+
+
+    </script>
+</body>
+</html>

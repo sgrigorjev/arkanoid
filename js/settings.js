@@ -5,7 +5,9 @@ define(function (require) {
         spaceship: {
             speed: 800,
             accelerate: 250,
-            bottomOffset: 10
+            bottomOffset: 10,
+            sprite: "img/spaceship-white-44x44.png",
+            spriteImage: null
         },
         bullet: {
             speed: 800
@@ -13,7 +15,9 @@ define(function (require) {
         target: {
             speed: 40,
             shift: 40,
-            fallFactor: 0
+            fallFactor: 0,
+            sprite: "img/target-white-44x44.png",
+            spriteImage: null
         },
         fleet: {
             rows: 3,

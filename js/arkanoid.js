@@ -13,6 +13,11 @@ define(function (require) {
 
     $(function() {
 
+        settings.spaceship.spriteImage = new Image();
+        settings.spaceship.spriteImage.src = settings.spaceship.sprite;
+
+        settings.target.spriteImage = new Image();
+        settings.target.spriteImage.src = settings.target.sprite;
 
         $('#spaceship_speed').slider({
             min: 100,
@@ -75,7 +80,7 @@ define(function (require) {
             max: 20,
             step: 1,
         }).on('slide', function(event) {
-            settings.target.fallFactor = (event.value < 20) ? 20 - event.value : 1;
+            settings.target.fallFactor = event.value;
             $("#target_fallFactor_value").text(event.value);
         });
         $("#target_fallFactor_value").text(settings.target.fallFactor);
@@ -117,10 +122,49 @@ define(function (require) {
 
         scenes.bg = $lib.Scene("background", null, settings.width, settings.height).appendTo($container.get(0));
         scenes.bg.onDraw(scenesDebugInfo(scenes.bg.id));
-        scenes.bg.action();
 
-        var map = new Map(scenes.bg, 10);
-        map.draw();
+        (function(){
+            var starts = [];
+            var startsCount = 50;
+            var startsIndent = 10;
+
+            var bg = $lib.Shapes.Rect(
+                $lib.Shapes.Point(0,0),
+                settings.width,
+                settings.height
+            );
+
+            function randomStarts() {
+                var i, x, y, s;
+                starts = [];
+                for (i = 0 ; i < startsCount ; ++i) {
+                    x = _.random(startsIndent, settings.width - startsIndent);
+                    y = _.random(startsIndent, settings.height - startsIndent);
+                    s = _.random(1, 2);
+                    starts.push($lib.Shapes.Rect($lib.Shapes.Point(x, y), s, s));
+                };
+            }
+            function drawBg() {
+                scenes.bg.clear();
+
+                randomStarts();
+
+                $lib.Draw(bg, {color: 'black', style: 'fill'}, scenes.bg);
+                _.each(starts, function(star) {
+                    $lib.Draw(star, {color: 'white', style: 'fill'}, scenes.bg);
+                });
+
+                window.setTimeout(function(){
+                    drawBg();
+                }, 5000);
+            }
+
+            drawBg();
+
+        })();
+
+        //var map = new Map(scenes.bg, 10);
+        //map.draw();
 
         /** Spaceship */
 
@@ -212,8 +256,6 @@ define(function (require) {
                         shotAllowed = false;
                     }
                     break;
-                default:
-                    console.log(event.keyCode);
             }
         });
         $(document).on('keyup', function(event){

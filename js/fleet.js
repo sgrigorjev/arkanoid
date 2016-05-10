@@ -100,7 +100,6 @@ define(['app/settings','app/target','canvaslib','underscore'], function (setting
                         self._targetsAmount--;
                         if (self._targetsAmount > 0) {
                             self.checkIndent();
-                            console.warn("Indent: %o / %o", self._indentLeft, self._indentRight);
                         }
                         break check_intersections;
                     }

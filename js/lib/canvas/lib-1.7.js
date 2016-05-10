@@ -181,6 +181,9 @@ function Draw( shape, options, ctx) {
 	else if ( shape instanceof Text ) {
 		this.Text(shape);
 	}
+	else if ( shape instanceof window.Image ) {
+		this.Image(shape);
+	}
 	this._finish();
 };
 Draw.prototype = {
@@ -264,6 +267,9 @@ Draw.prototype = {
 		} else {
 			this.ctx.strokeText(text.text, text.axis.x, text.axis.y);
 		}
+	},
+	Image: function(img) {
+		this.ctx.drawImage(img, this.options.point.x, this.options.point.y, this.options.width, this.options.height);
 	}
 };
 

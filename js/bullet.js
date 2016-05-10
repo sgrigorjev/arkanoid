@@ -64,7 +64,7 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
         var self = this;
 
         _.each(self._shapes, function(shape){
-            $lib.Draw(shape, {color: 'red', style: 'fill'}, scene);
+            $lib.Draw(shape, {color: 'white', style: 'fill'}, scene);
         });
     };
 
