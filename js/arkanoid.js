@@ -10,6 +10,7 @@ define(function (require) {
     var Bullet = require('app/bullet');
     var Target = require('app/target');
     var Fleet = require('app/fleet');
+    var Explosion = require('app/explosion');
 
     $(function() {
 
@@ -18,6 +19,11 @@ define(function (require) {
 
         settings.target.spriteImage = new Image();
         settings.target.spriteImage.src = settings.target.sprite;
+
+        settings.explosion.sprite1Image = new Image();
+        settings.explosion.sprite1Image.src = settings.explosion.sprite1;
+        settings.explosion.sprite2Image = new Image();
+        settings.explosion.sprite2Image.src = settings.explosion.sprite2;
 
         $('#spaceship_speed').slider({
             min: 100,
@@ -214,6 +220,10 @@ define(function (require) {
 
         scenes.bullet = (function() {
 
+            function registerExplosion(target) {
+                explosions.push(new Explosion(target.getCenter()));
+            }
+
             return $lib.Scene("bullet", function(dt){
 
                 var scene = this;
@@ -221,7 +231,7 @@ define(function (require) {
                 if (bullet && bullet.update(dt)) {
                     scene.clear();
                     bullet.draw(this);
-                    if (fleet.checkHit(bullet)) {
+                    if (fleet.checkHit(bullet, registerExplosion)) {
                         scene.clear();
                         bullet = null;
                     }
@@ -237,6 +247,32 @@ define(function (require) {
         })();
         scenes.bullet.onDraw(scenesDebugInfo(scenes.bullet.id));
         scenes.bullet.action();
+
+        /* Explosion */
+
+        var explosions = [];
+
+        scenes.explosion = (function() {
+
+            return $lib.Scene("explosion", function(dt){
+
+                var scene = this, i;
+
+                scene.clear();
+
+                for (i = 0 ; i < explosions.length ; ++i) {
+                    if (explosions[i].update(dt)) {
+                        explosions[i].draw(scene);
+                    } else {
+                        explosions.splice(i, 1);
+                    }
+                }
+
+            }, settings.width, settings.height).appendTo($container.get(0));
+
+        })();
+        scenes.explosion.onDraw(scenesDebugInfo(scenes.explosion.id));
+        scenes.explosion.action();
 
         /** Key controls */
 

@@ -161,5 +161,11 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
         return self._shapes;
     };
 
+    Target.prototype.getCenter = function() {
+        var self = this;
+
+        return $lib.Shapes.Point(self.base.x + (self.width / 2), self.base.y + (self.height / 2));
+    };
+
     return Target;
 });

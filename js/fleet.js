@@ -81,7 +81,7 @@ define(['app/settings','app/target','canvaslib','underscore'], function (setting
      * @param {Bullet} bullet
      * @returns {boolean}
      */
-    Fleet.prototype.checkHit = function(bullet) {
+    Fleet.prototype.checkHit = function(bullet, callback) {
         var self = this,
             row, col,
             targetHit = false;
@@ -96,6 +96,9 @@ define(['app/settings','app/target','canvaslib','underscore'], function (setting
                         }
                     });
                     if (targetHit) {
+                        if (callback) {
+                            callback.call(null, self._targets[row][col]);
+                        }
                         self._targets[row][col] = null;
                         self._targetsAmount--;
                         if (self._targetsAmount > 0) {

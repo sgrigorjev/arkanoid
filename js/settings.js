@@ -24,6 +24,12 @@ define(function (require) {
             cols: 12,
             topOffset: 0,
             rowOffset: 0
+        },
+        explosion: {
+            sprite1: "img/explode-1-white-44x44.png",
+            sprite1Image: null,
+            sprite2: "img/explode-2-white-44x44.png",
+            sprite2Image: null
         }
     };
 });
