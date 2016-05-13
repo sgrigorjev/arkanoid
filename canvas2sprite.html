@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>canvas2image 0.1</title>
+    <script src="js/lib/jquery-1.10.2.min.js"></script>
     <style type="text/css">
         body {
             background-color: #d4d4d4;
@@ -15,19 +16,37 @@
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
 
+        var $img1 = $.Deferred();
         var img1 = new Image();
-        img1.src = "600x300.jpg";
+        img1.src = "img/600x300.jpg";
+        img1.onload = function() {
+            $img1.resolve(img1);
+        }
 
+        var $img2 = $.Deferred();
         var img2 = new Image();
-        img2.src = "800x450.jpg";
+        img2.src = "img/800x450.jpg";
         img2.onload = function() {
+            $img2.resolve(img2);
+        }
+
+        var $sprite = $.Deferred();
+        var sprite = new Image();
+        sprite.src = "img/sprite-white-33x33.png";
+        sprite.onload = function() {
+            $sprite.resolve(sprite);
+        }
+
+
+        $.when($img1, $img2, $sprite).then(function(img1, img2, sprite){
 
             canvas.width = img2.width;
             canvas.height = img2.height;
             ctx.drawImage(img2, 0, 0);
-            ctx.drawImage(img1, 10, 10, 600, 300);
+            ctx.drawImage(sprite, 33, 0, 33, 33, 100, 100, 33, 33);
 
-        };
+            console.log('Hey! %o, %o, %o', img1, img2, sprite);
+        });
 
 
 

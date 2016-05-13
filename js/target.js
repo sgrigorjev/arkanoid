@@ -7,8 +7,8 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
     function Target(startPoint) {
         var self = this;
 
-        self.width = 44;
-        self.height = 44;
+        self.width = 33;
+        self.height = 33;
 
         self.startPoint = startPoint;
 
@@ -16,26 +16,6 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
         self._shapes = {};
 
         self._points.p1 = $lib.Shapes.Point(self.startPoint.x - (self.width / 2), self.startPoint.y - (self.height / 2));
-
-        /*
-        self._points.p1 = $lib.Shapes.Point(self.startPoint.x - (30 / 2), self.startPoint.y - (30 / 2));
-        self._points.p2 = $lib.Shapes.Point(self.startPoint.x - (40 / 2), self.startPoint.y - (30 / 2));
-        self._points.p3 = $lib.Shapes.Point(self.startPoint.x - (10 / 2), self.startPoint.y - (30 / 2));
-        */
-
-        /*
-        self._points.p1 = $lib.Shapes.Point(self.startPoint.x - (15 / 2), self.startPoint.y - (5 / 2) - 15);
-        self._points.p2 = $lib.Shapes.Point(self.startPoint.x - (25 / 2), self.startPoint.y - (5 / 2) - 10);
-        self._points.p3 = $lib.Shapes.Point(self.startPoint.x - (35 / 2), self.startPoint.y - (5 / 2) - 5);
-        self._points.p4 = $lib.Shapes.Point(self.startPoint.x - (5 / 2), self.startPoint.y - (5 / 2) - 5);
-        self._points.p5 = $lib.Shapes.Point(self.startPoint.x + (35 / 2) - 5, self.startPoint.y - (5 / 2) - 5);
-        self._points.p6 = $lib.Shapes.Point(self.startPoint.x - (35 / 2), self.startPoint.y - (5/ 2));
-        self._points.p7 = $lib.Shapes.Point(self.startPoint.x - (15 / 2), self.startPoint.y - (5/ 2) + 5);
-        self._points.p8 = $lib.Shapes.Point(self.startPoint.x + (15 / 2) - 5, self.startPoint.y - (5/ 2) + 5);
-        self._points.p9 = $lib.Shapes.Point(self.startPoint.x - (25 / 2), self.startPoint.y - (5/ 2) + 10);
-        self._points.p10 = $lib.Shapes.Point(self.startPoint.x - (5 / 2), self.startPoint.y - (5/ 2) + 10);
-        self._points.p11 = $lib.Shapes.Point(self.startPoint.x + (25 / 2) - 5, self.startPoint.y - (5/ 2) + 10);
-        */
 
         self.base = self._points.p1;
 
@@ -59,26 +39,6 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
         var self = this;
 
         self._shapes.r1 = $lib.Shapes.Rect(self._points.p1, self.width, self.height);
-
-        /*
-        self._shapes.r1 = $lib.Shapes.Rect(self._points.p1, 30, 30);
-        self._shapes.r2 = $lib.Shapes.Rect(self._points.p2, 40, 20);
-        self._shapes.r3 = $lib.Shapes.Rect(self._points.p3, 10, 40);
-        */
-
-        /*
-        self._shapes.r1 = $lib.Shapes.Rect(self._points.p1, 15, 5);
-        self._shapes.r2 = $lib.Shapes.Rect(self._points.p2, 25, 5);
-        self._shapes.r3 = $lib.Shapes.Rect(self._points.p3, 5, 5);
-        self._shapes.r4 = $lib.Shapes.Rect(self._points.p4, 5, 5);
-        self._shapes.r5 = $lib.Shapes.Rect(self._points.p5, 5, 5);
-        self._shapes.r6 = $lib.Shapes.Rect(self._points.p6, 35, 5);
-        self._shapes.r7 = $lib.Shapes.Rect(self._points.p7, 5, 5);
-        self._shapes.r8 = $lib.Shapes.Rect(self._points.p8, 5, 5);
-        self._shapes.r9 = $lib.Shapes.Rect(self._points.p9, 5, 5);
-        self._shapes.r10 = $lib.Shapes.Rect(self._points.p10, 5, 5);
-        self._shapes.r11 = $lib.Shapes.Rect(self._points.p11, 5, 5);
-        */
     };
 
     /**
@@ -148,11 +108,13 @@ define(['app/settings','app/character','canvaslib','underscore'], function (sett
         });
         */
 
-        $lib.Draw(settings.target.spriteImage, {
-            point: self._points.p1,
-            width: self.width,
-            height: self.height
-        }, scene);
+        settings.target.sprite.done(function(img){
+            $lib.Draw(img, {
+                point: self._points.p1,
+                width: self.width,
+                height: self.height
+            }, scene);
+        });
     };
 
     Target.prototype.getShapes = function() {

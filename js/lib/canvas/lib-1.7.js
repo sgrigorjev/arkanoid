@@ -303,62 +303,54 @@ DrawManager.clear = function( canvas, ctx ) {
 
 $lib.Draw = DrawManager;
 
+function ResourceImage(src, callback) {
+	var self = this;
 
-function Resource() {
-	this._cache = {};
-	this._callbacks = [];
-};
-Resource.prototype = {
-	constructor: Resource,
-	__load: function( url ) {
-		var self = this;
-		if ( this._cache[url] ) {
-			return;
-		}
-		this._cache[url] = false;
-		var img = new Image();
-		img.onload = function(){
-			self._cache[url] = img;
-			if ( self.isReady() ) {
-				_.each(self._callbacks, function(callback){
-					callback.call(null);
-				});
-			}
-		};
-		img.src = url;
-	},
-	load: function( list ) {
-		var self = this;
-		if ( !_.isArray(list) ) {
-			list = [list];
-		}
-		_.each(list, function(url){
-			self.__load(url);
-		});
-	},
-	isReady: function() {
-		var ready = true;
-		_.each(this._cache, function(res){
-			if ( !res ) {
-				ready = false;
-			}
-		});
-		return ready;
-	},
-	ready: function(callback) {
-		this._callbacks.push(callback);
-		if ( this.isReady() ) {
-			_.each(this._callbacks, function(callback){
-				callback.call(null);
-			});
-		}
-	},
-	get: function(url) {
-		return this._cache[url];
+	self._cache = {};
+	self._callbacks = [];
+
+	if (!src) {
+		throw new Error('Please specify src for image');
 	}
+	if (typeof callback === 'function') {
+		self.done(callback);
+	}
+
+	self._src = src;
+	self._img = new Image();
+	self._isLoad = false;
+
+	function load() {
+		self._isLoad = true;
+		_.each(self._callbacks, function(callback){
+			callback.call(null, self._img);
+		});
+		self._callbacks = [];
+	}
+
+	if (self._img.addEventListener) {
+		self._img.addEventListener('load', load, false);
+	} else if (self._img.attachEvent) {
+		self._img.attachEvent('onload', load);
+	}
+
+	self._img.src = self._src;
+}
+ResourceImage.prototype.done = function(callback){
+	if (typeof callback !== 'function') {
+		throw new Error('ResourceImage.done: first parameter should be a function');
+	}
+	if (this._isLoad) {
+		callback.call(null, this._img);
+	} else {
+		this._callbacks.push(callback);
+	}
+	return this;
 };
 
-$lib.Resource = new Resource();
+$lib.Image = function(src, callback) {
+	return new ResourceImage(src, callback);
+};
 
 function Scene(id, callback, width, height) {
 	this.id = id;

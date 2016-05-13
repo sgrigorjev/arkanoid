@@ -14,16 +14,15 @@ define(function (require) {
 
     $(function() {
 
-        settings.spaceship.spriteImage = new Image();
-        settings.spaceship.spriteImage.src = settings.spaceship.sprite;
-
-        settings.target.spriteImage = new Image();
-        settings.target.spriteImage.src = settings.target.sprite;
-
+        settings.target.sprite = $lib.Image(settings.target.sprite);
+        settings.spaceship.sprite = $lib.Image(settings.spaceship.sprite);
+        
         settings.explosion.sprite1Image = new Image();
         settings.explosion.sprite1Image.src = settings.explosion.sprite1;
         settings.explosion.sprite2Image = new Image();
         settings.explosion.sprite2Image.src = settings.explosion.sprite2;
+
+
 
         $('#spaceship_speed').slider({
             min: 100,
